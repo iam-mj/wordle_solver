@@ -14,7 +14,8 @@ f.close()
 
 #alegem un cuvant random
 n = random.randint(0, N - 1)
-cuv = L[n]
+#cuv = L[n]
+cuv = "TARTA"
 print(cuv)
 
 class MyGUI:
@@ -63,9 +64,9 @@ class MyGUI:
         
         self.num = 0#how many letters the player got right
         LF = {k:cuv.count(k) for k in cuv} #dictionar de frecventa pt literele cuvantului random
-        LC = {}
+        LC = {k:0 for k in cuv}
 
-        if message in L and len(message) == 5: 
+        if len(message) == 5: 
 
             self.frame = tk.Frame(self.root)
             self.frame.pack()
@@ -75,13 +76,11 @@ class MyGUI:
                     self.button = tk.Button(self.frame, text = message[i], bg = 'green')
                     self.button.pack(side = tk.LEFT, pady = 2)
                     self.num += 1
-                    value = LC[cuv[i]]
-                    value += 1
-                    LC.update({cuv[i]:value})
-                    print(LC)
-                elif message[i] in cuv and message[i] not in message[i + 1:] and LC[cuv[i]] != LF[cuv[i]]:
+                    LC[cuv[i]] += 1
+                elif message[i] in cuv and LC[cuv[i]] != LF[cuv[i]]:
                     self.button = tk.Button(self.frame, text = message[i], bg = 'yellow')
                     self.button.pack(side = tk.LEFT, pady = 2)
+                    LC[cuv[i]] += 1
                 else:
                     self.button = tk.Button(self.frame, text = message[i], bg = 'white')
                     self.button.pack(side = tk.LEFT, pady = 2)
