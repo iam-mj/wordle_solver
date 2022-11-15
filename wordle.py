@@ -62,6 +62,8 @@ class MyGUI:
         #show the feedback
         
         self.num = 0#how many letters the player got right
+        LF = {k:cuv.count(k) for k in cuv} #dictionar de frecventa pt literele cuvantului random
+        LC = {}
 
         if message in L and len(message) == 5: 
 
@@ -73,7 +75,11 @@ class MyGUI:
                     self.button = tk.Button(self.frame, text = message[i], bg = 'green')
                     self.button.pack(side = tk.LEFT, pady = 2)
                     self.num += 1
-                elif message[i] in cuv and message[i] not in message[i + 1:]:
+                    value = LC[cuv[i]]
+                    value += 1
+                    LC.update({cuv[i]:value})
+                    print(LC)
+                elif message[i] in cuv and message[i] not in message[i + 1:] and LC[cuv[i]] != LF[cuv[i]]:
                     self.button = tk.Button(self.frame, text = message[i], bg = 'yellow')
                     self.button.pack(side = tk.LEFT, pady = 2)
                 else:
