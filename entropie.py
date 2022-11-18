@@ -6,16 +6,30 @@ L = []
 N = 11454 #numarul de cuvinte din baza de date
 LIT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-def gri(lit):
-    return 1 - P[lit]
+def gri(lit, poz):
+    return 1 - galben(lit, poz) - verde(lit, poz)
 
-def galben(lit):
-    return P[lit] * (4 / 5)
+def galben(lit, poz):
+    s = 0
+    for i in range(5):
+        if i != poz:
+            s += P[lit][i]
+    return s / N 
 
-def verde(lit):
-    return P[lit] * (1 / 5)
+def galben2(lit, poz1, poz2):
+    s = 0
+    for i in range(5):
+        if i != poz1 and i != poz2:
+            s += P[lit][i]
+    return s / N 
+
+def verde(lit, poz):
+    return P[lit][poz] / N
 
 def entropie(cuvant):
+    Dict = {k:[] for k in cuvant}
+    for i in range(len(cuvant)):
+        Dict[cuvant[i]].append(i)
     ENTROPIE = 0
     #toate numerele de la 0 la 243 in baza 3
     cnt = 0
@@ -32,13 +46,36 @@ def entropie(cuvant):
         cnt += 1
         #calculam cata informatie ne ofera fiecare posibil feedback
         p = 1
-        for i in range(5):
-            if i == 0:
-                p *= gri(cuvant[i])
-            elif i == 1:
-                p *= galben(cuvant[i])
-            else: 
-                p *= verde(cuvant[i])
+        for i in range(len(LIST50)):
+            if len(Dict[cuvant[i]]) == 2:
+                ind = i 
+                for j in Dict[cuvant[i]]: 
+                    ind = ind ^ j #cealalta pozitie pe care se mai gaseste litera in cuvant
+                if (LIST50[ind] == 1 or LIST50[ind] == 2) and LIST50[i] == 0:
+                    p *= 1 - P[cuvant[i]][i] / N
+                elif (LIST50[i] == 1 or LIST50[i] == 2) and LIST50[ind] == 0:
+                    if LIST50[i] == 1:
+                        p *= galben(cuvant[i], i)
+                    else: 
+                        p *= verde(cuvant[i], i)
+                elif LIST50[ind] == LIST50[i]:
+                    if LIST50[i] == 0 and i < ind:
+                        p *= gri(cuvant[i], i)
+                    elif LIST50[i] == 1 and i < ind:
+                        p *= galben2(cuvant[i], i, ind) 
+                    else:
+                        p *= verde(cuvant[i], i)
+                elif LIST50[i] == 2 and LIST50[ind] == 1:
+                    p *= verde(cuvant[i], i)
+                else:
+                    p *= galben2(cuvant[i], i, ind) 
+            else:
+                if LIST50[i] == 0:
+                        p *= gri(cuvant[i], i)
+                elif LIST50[i] == 1:
+                    p *= galben(cuvant[i], i)
+                else: 
+                    p *= verde(cuvant[i], i)
         ENTROPIE += p * (math.log2(1 / p))
     return ENTROPIE
         
@@ -55,15 +92,14 @@ print(cuv)
 
 
 #calculam probabilitatea de aparitie a fiecarei litere
-P = {k:0 for k in LIT}
+P = {k:[0, 0, 0, 0, 0] for k in LIT}
 num = 5 * N #numarul total de litere din fisier
 for i in range(len(L)):
-    for litera in L[i]:
-        P[litera] += 1
+    for j in range(5):
+        P[L[i][j]][j] += 1
 
-for i in LIT:
-    P[i] = P[i] / num
-
+print(entropie("TAREI"))
+"""
 emax = 0
 cuvmax = ""
 for i in L:
@@ -74,3 +110,4 @@ for i in L:
 
 print(cuvmax)
 print(emax)
+"""
