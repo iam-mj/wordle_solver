@@ -6,77 +6,87 @@ L = []
 N = 11454 #numarul de cuvinte din baza de date
 LIT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-def gri(lit, poz):
-    return 1 - galben(lit, poz) - verde(lit, poz)
+def gri(lit):
+    s = 0
+    for i in range(5):
+        s += N - P[lit][i]
+    return s / (5 * N)
 
 def galben(lit, poz):
     s = 0
     for i in range(5):
         if i != poz:
             s += P[lit][i]
-    return s / N 
+    return s / (5 * N)
 
 def galben2(lit, poz1, poz2):
     s = 0
     for i in range(5):
         if i != poz1 and i != poz2:
             s += P[lit][i]
-    return s / N 
+    return s / (5 * N)
 
 def verde(lit, poz):
     return P[lit][poz] / N
 
 def entropie(cuvant):
+
     Dict = {k:[] for k in cuvant}
     for i in range(len(cuvant)):
         Dict[cuvant[i]].append(i)
     ENTROPIE = 0
+
     #toate numerele de la 0 la 243 in baza 3
     cnt = 0
     while cnt < 243:
+
         #transformam numarul in baza 3
         i = cnt
-        LIST50 = [0 for i in range(5)]
+        LIST = [0 for i in range(5)]
         nr = 1 #contorizam impartirile
         while i > 0:
             r = i % 3 # 0 - gri, 1 - galben, 2 - verde
-            LIST50[5 - nr] = r
+            LIST[5 - nr] = r
             i = i // 3
             nr += 1
         cnt += 1
+
         #calculam cata informatie ne ofera fiecare posibil feedback
         p = 1
-        for i in range(len(LIST50)):
+        for i in range(len(LIST)):
+
+            #cazurile pentru 2 litere identice
             if len(Dict[cuvant[i]]) == 2:
+
                 ind = i 
                 for j in Dict[cuvant[i]]: 
                     ind = ind ^ j #cealalta pozitie pe care se mai gaseste litera in cuvant
-                if (LIST50[ind] == 1 or LIST50[ind] == 2) and LIST50[i] == 0:
-                    p *= 1 - P[cuvant[i]][i] / N
-                elif (LIST50[i] == 1 or LIST50[i] == 2) and LIST50[ind] == 0:
-                    if LIST50[i] == 1:
-                        p *= galben(cuvant[i], i)
-                    else: 
-                        p *= verde(cuvant[i], i)
-                elif LIST50[ind] == LIST50[i]:
-                    if LIST50[i] == 0 and i < ind:
-                        p *= gri(cuvant[i], i)
-                    elif LIST50[i] == 1 and i < ind:
-                        p *= galben2(cuvant[i], i, ind) 
-                    else:
-                        p *= verde(cuvant[i], i)
-                elif LIST50[i] == 2 and LIST50[ind] == 1:
+
+                if LIST[i] == 0 and LIST[ind] == 0 and i < ind:
+                    p *= gri(cuvant[i])
+                elif ((LIST[i] == 0 and LIST[ind] == 1) or (LIST[i] == 1 and LIST[ind] == 0)) and i < ind:
+                    p *= galben2(cuvant[i], i, ind)
+                elif LIST[i] == 2 and LIST[ind] == 0:
                     p *= verde(cuvant[i], i)
-                else:
-                    p *= galben2(cuvant[i], i, ind) 
+                elif LIST[i] == 1 and LIST[ind] == 1:
+                    p *= galben2(cuvant[i], i, ind)
+                elif LIST[i] == 1 and LIST[ind] == 2:
+                    p *= galben2(cuvant[i], i, ind)
+                elif LIST[i] == 2 and LIST[ind] == 1:
+                    p *= verde(cuvant[i], i)
+                elif LIST[i] == 2 and LIST[ind] == 2:
+                    p *= verde(cuvant[i], i)
+
             else:
-                if LIST50[i] == 0:
-                        p *= gri(cuvant[i], i)
-                elif LIST50[i] == 1:
+                if LIST[i] == 0:
+                    p *= gri(cuvant[i])
+                elif LIST[i] == 1:
                     p *= galben(cuvant[i], i)
                 else: 
                     p *= verde(cuvant[i], i)
+
         ENTROPIE += p * (math.log2(1 / p))
+
     return ENTROPIE
         
 
@@ -91,15 +101,12 @@ cuv = L[n]
 print(cuv)
 
 
-#calculam probabilitatea de aparitie a fiecarei litere
+#calculam probabilitatea de aparitie a fiecarei litere pe fiecare pozitie
 P = {k:[0, 0, 0, 0, 0] for k in LIT}
-num = 5 * N #numarul total de litere din fisier
 for i in range(len(L)):
     for j in range(5):
         P[L[i][j]][j] += 1
 
-print(entropie("TAREI"))
-"""
 emax = 0
 cuvmax = ""
 for i in L:
@@ -107,7 +114,5 @@ for i in L:
     if e > emax:
         emax = e
         cuvmax = i
-
 print(cuvmax)
 print(emax)
-"""
