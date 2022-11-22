@@ -1,8 +1,6 @@
 import random
 import tkinter as tk
 
-LC = []
-
 f = open("D:\Programare\Python\proiect_asc\cuvinte.txt", "r")
 L = []
 N = 11454 #numarul de cuvinte din baza de date
@@ -14,8 +12,7 @@ f.close()
 
 #alegem un cuvant random
 n = random.randint(0, N - 1)
-#cuv = L[n]
-cuv = "TARTA"
+cuv = L[n]
 print(cuv)
 
 class MyGUI:
@@ -66,7 +63,7 @@ class MyGUI:
         LF = {k:cuv.count(k) for k in cuv} #dictionar de frecventa pt literele cuvantului random
         LC = {k:0 for k in cuv}
 
-        if len(message) == 5: 
+        if message in L and len(message) == 5: 
 
             self.frame = tk.Frame(self.root)
             self.frame.pack()
@@ -77,10 +74,10 @@ class MyGUI:
                     self.button.pack(side = tk.LEFT, pady = 2)
                     self.num += 1
                     LC[cuv[i]] += 1
-                elif message[i] in cuv and LC[cuv[i]] != LF[cuv[i]]:
+                elif message[i] in cuv and LC[message[i]] < LF[message[i]]:
                     self.button = tk.Button(self.frame, text = message[i], bg = 'yellow')
                     self.button.pack(side = tk.LEFT, pady = 2)
-                    LC[cuv[i]] += 1
+                    LC[message[i]] += 1
                 else:
                     self.button = tk.Button(self.frame, text = message[i], bg = 'white')
                     self.button.pack(side = tk.LEFT, pady = 2)
@@ -141,3 +138,4 @@ class MyGUI:
 
 
 MyGUI()
+

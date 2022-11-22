@@ -107,12 +107,14 @@ for i in range(len(L)):
     for j in range(5):
         P[L[i][j]][j] += 1
 
-emax = 0
-cuvmax = ""
-for i in L:
-    e = entropie(i)
-    if e > emax:
-        emax = e
-        cuvmax = i
-print(cuvmax)
-print(emax)
+NewL = L
+while(len(NewL) > 1):
+    emax = 0
+    cuvmax = ""
+    for i in L:
+        e = entropie(i)
+        if e > emax:
+            emax = e
+            cuvmax = i
+        print(cuvmax)
+        print(emax)
