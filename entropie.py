@@ -10,21 +10,30 @@ def gri(lit):
     s = 0
     for i in range(5):
         s += N - P[lit][i]
-    return s / (5 * N)
+    if s:
+        return s / (5 * N)
+    else:
+        return 1
 
 def galben(lit, poz):
     s = 0
     for i in range(5):
         if i != poz:
             s += P[lit][i]
-    return s / (5 * N)
+    if s:
+        return s / (5 * N)
+    else:
+        return 1
 
 def galben2(lit, poz1, poz2):
     s = 0
     for i in range(5):
         if i != poz1 and i != poz2:
             s += P[lit][i]
-    return s / (5 * N)
+    if s:
+        return s / (5 * N)
+    else:
+        return 1
 
 def verde(lit, poz):
     return P[lit][poz] / N
@@ -53,7 +62,10 @@ def entropie(cuvant):
 
         #calculam cata informatie ne ofera fiecare posibil feedback
         p = 1
-        for i in range(len(LIST)):
+        for i in range(5):
+
+            if P[cuvant[i]][i] == 0:
+                continue
 
             #cazurile pentru 2 litere identice
             if len(Dict[cuvant[i]]) == 2:
@@ -100,19 +112,63 @@ n = random.randint(0, N - 1)
 cuv = L[n]
 print(cuv)
 
+while(len(L) > 1):
+    
+    #calculam probabilitatea de aparitie a fiecarei litere pe fiecare pozitie
+    P = {k:[0, 0, 0, 0, 0] for k in LIT}
+    for i in range(len(L)):
+        for j in range(5):
+            P[L[i][j]][j] += 1
+    print(P)
 
-#calculam probabilitatea de aparitie a fiecarei litere pe fiecare pozitie
-P = {k:[0, 0, 0, 0, 0] for k in LIT}
-for i in range(len(L)):
-    for j in range(5):
-        P[L[i][j]][j] += 1
+    emax = 0
+    cuvmax = ""
+    for i in L:
+        e = entropie(i)
+        if e > emax:
+            emax = e
+            cuvmax = i
+    print(cuvmax)
+    print(emax)
+    
+    #trimitem incercarea la wordle si primim feedback
+    fd = input("Dati feedback-ul: ")
+    
+    #facem o noua lista, doar cu acele cuvinte care corespund feedback-ului
+    auxL = []
 
-emax = 0
-cuvmax = ""
-for i in L:
-    e = entropie(i)
-    if e > emax:
-        emax = e
-        cuvmax = i
-print(cuvmax)
-print(emax)
+    for cuvant in L:
+        valid = 1
+
+        for i in range(5):
+            if fd[i] == "2" and cuvant[i] != cuvmax[i]:
+                valid = 0
+                break
+            elif fd[i] == "1" and cuvmax[i] not in cuvant:
+                valid = 0
+                break
+            elif fd[i] == "0":
+                if cuvmax.count(cuvmax[i]) == 1 and cuvmax[i] in cuvant:
+                    valid = 0
+                    break
+                elif cuvmax.count(cuvmax[i]) == 2:
+                    # pooz = cealalta pozitie pe care se gaseste litera
+                    pooz = cuvmax.find(cuvmax[i], i + 1)
+                    if pooz == -1:
+                        pooz = cuvmax.find(cuvmax[i], 0, i)
+                    if fd[pooz] == "0" and cuvmax[i] in cuvant:
+                        valid = 0
+                        break
+            if cuvmax == cuvant:
+                valid = 0
+                break
+
+        if valid == 1:
+            auxL += [cuvant]
+
+    L = auxL
+    print(f"NEWL are lungime {len(L)}")
+
+print(L)
+print(f"Cuvantul cautat este {L[0]}")
+ 
