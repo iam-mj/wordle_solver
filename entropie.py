@@ -153,7 +153,6 @@ while(len(L) > 1):
             else:
                 D[cuvmax[i]] = [1]
                 D[cuvmax[i]].append(-1)
-    print(D)
     
     #facem o noua lista, doar cu acele cuvinte care corespund feedback-ului
     auxL = []
@@ -187,27 +186,6 @@ while(len(L) > 1):
                         if D[litera][j] != -1 and cuvant[D[litera][j]] != litera:
                             valid = 0
                             break
-            
-            """
-            if fd[i] == "2" and cuvant[i] != cuvmax[i]:
-                valid = 0
-                break
-            elif fd[i] == "1" and cuvmax[i] not in cuvant:
-                valid = 0
-                break
-            elif fd[i] == "0":
-                if cuvmax.count(cuvmax[i]) == 1 and cuvmax[i] in cuvant:
-                    valid = 0
-                    break
-                elif cuvmax.count(cuvmax[i]) == 2:
-                    # pooz = cealalta pozitie pe care se gaseste litera
-                    pooz = cuvmax.find(cuvmax[i], i + 1)
-                    if pooz == -1:
-                        pooz = cuvmax.find(cuvmax[i], 0, i)
-                    if fd[pooz] == "0" and cuvmax[i] in cuvant:
-                        valid = 0
-                        break
-            """
 
         if valid == 1:
             auxL += [cuvant]

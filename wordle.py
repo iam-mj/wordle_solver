@@ -67,7 +67,7 @@ class MyGUI:
 
         D2 = {k : message.count(k) for k in message}
 
-        if len(message) == 5: 
+        if message in L and len(message) == 5: 
 
             self.frame = tk.Frame(self.root)
             self.frame.pack()
