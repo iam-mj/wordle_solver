@@ -15,6 +15,8 @@ n = random.randint(0, N - 1)
 cuv = L[n]
 print(cuv)
 
+D = {k:cuv.count(k) for k in cuv}
+
 class MyGUI:
 
     def __init__(self):
@@ -60,24 +62,45 @@ class MyGUI:
         #show the feedback
         
         self.num = 0#how many letters the player got right
-        LF = {k:cuv.count(k) for k in cuv} #dictionar de frecventa pt literele cuvantului random
-        LC = {k:0 for k in cuv}
+        D1 = {}
+        D1 = D.copy()
 
-        if message in L and len(message) == 5: 
+        D2 = {k : message.count(k) for k in message}
+
+        if len(message) == 5: 
 
             self.frame = tk.Frame(self.root)
             self.frame.pack()
 
-            for i in range(len(message)):
+            #calculam feedback-ul
+            user_sol = "00000"
+
+            for i in range(5):
                 if message[i] == cuv[i]:
+                    user_sol = user_sol[:i] + "2" + user_sol[i + 1:]
+                    D1[message[i]] -= 1
+                    D2[message[i]] -= 1
+                elif message[i] not in cuv:
+                    user_sol = user_sol[:i] + "0" + user_sol[i + 1:]
+                else:
+                    user_sol = user_sol[:i] + "-" + user_sol[i + 1:]
+        
+            for i in range(5):
+                if user_sol[i] == "-" and D1[message[i]] != 0:
+                    user_sol = user_sol[:i] + "1" + user_sol[i + 1:]
+                    D1[message[i]] -= 1
+                elif user_sol[i] == "-":
+                    user_sol = user_sol[:i] + "0" + user_sol[i + 1:]
+
+            #pe baza feedback-ului cream butoanele cu fundalele corespunzatoare
+            for i in range(5):
+                if user_sol[i] == "2":
                     self.button = tk.Button(self.frame, text = message[i], bg = 'green')
                     self.button.pack(side = tk.LEFT, pady = 2)
                     self.num += 1
-                    LC[cuv[i]] += 1
-                elif message[i] in cuv and LC[message[i]] < LF[message[i]]:
+                elif user_sol[i] == "1":
                     self.button = tk.Button(self.frame, text = message[i], bg = 'yellow')
                     self.button.pack(side = tk.LEFT, pady = 2)
-                    LC[message[i]] += 1
                 else:
                     self.button = tk.Button(self.frame, text = message[i], bg = 'white')
                     self.button.pack(side = tk.LEFT, pady = 2)

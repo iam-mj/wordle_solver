@@ -119,8 +119,8 @@ while(len(L) > 1):
     for i in range(len(L)):
         for j in range(5):
             P[L[i][j]][j] += 1
-    print(P)
-
+    
+    #calculam cuvantul cu cea mai mare entropie
     emax = 0
     cuvmax = ""
     for i in L:
@@ -128,11 +128,32 @@ while(len(L) > 1):
         if e > emax:
             emax = e
             cuvmax = i
-    print(cuvmax)
+
+    #trimitem cuvantul cu entropia cea mai mare la wordle
+    print(cuvmax) 
     print(emax)
     
-    #trimitem incercarea la wordle si primim feedback
+    #primim feedback de la wordle
     fd = input("Dati feedback-ul: ")
+
+    #construim un dictionar cu informatia sigura pe care ne-o ofera feedbackul
+    D = {}
+    for i in range(5):
+        if fd[i] == "2":
+            if cuvmax[i] in D:
+                D[cuvmax[i]][0] += 1
+                D[cuvmax[i]].append(i)
+            else:
+                D[cuvmax[i]] = [1]
+                D[cuvmax[i]].append(i)
+        elif fd[i] == "1":
+            if cuvmax[i] in D:
+                D[cuvmax[i]][0] += 1
+                D[cuvmax[i]].append(-1)
+            else:
+                D[cuvmax[i]] = [1]
+                D[cuvmax[i]].append(-1)
+    print(D)
     
     #facem o noua lista, doar cu acele cuvinte care corespund feedback-ului
     auxL = []
@@ -141,6 +162,33 @@ while(len(L) > 1):
         valid = 1
 
         for i in range(5):
+            #daca are vreo litera pe care am testat-o deja si nu e
+            if cuvant[i] in cuvmax and cuvant[i] not in D:
+                valid = 0
+                break
+
+        for i in D.keys():
+            
+            if cuvmax == cuvant:
+                valid = 0
+                break
+
+            litera = i
+            if litera not in cuvant:
+                valid = 0
+                break
+            else:
+                #daca nu are litera de destule ori
+                if D[litera][0] > cuvant.count(litera):  
+                    valid = 0
+                    break
+                else:
+                    for j in range(1, D[litera][0] + 1):
+                        if D[litera][j] != -1 and cuvant[D[litera][j]] != litera:
+                            valid = 0
+                            break
+            
+            """
             if fd[i] == "2" and cuvant[i] != cuvmax[i]:
                 valid = 0
                 break
@@ -159,16 +207,13 @@ while(len(L) > 1):
                     if fd[pooz] == "0" and cuvmax[i] in cuvant:
                         valid = 0
                         break
-            if cuvmax == cuvant:
-                valid = 0
-                break
+            """
 
         if valid == 1:
             auxL += [cuvant]
 
     L = auxL
-    print(f"NEWL are lungime {len(L)}")
+    print(f"NewL are lungime {len(L)}")
 
-print(L)
 print(f"Cuvantul cautat este {L[0]}")
  
