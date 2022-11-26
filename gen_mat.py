@@ -2,7 +2,7 @@ import random
 import math
 
 f = open("D:\Programare\Python\proiect_asc\cuvinte.txt", "r")
-g = open("matrice.txt", "x")
+g = open("matrice2.txt", "x")
 L = []
 N = 11454 #numarul de cuvinte din baza de date
 LIT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -26,12 +26,13 @@ def fdbk(cuv, cuv2):
         else:
             user_sol = user_sol[:i] + "-" + user_sol[i + 1:]
         
-        for i in range(5):
-            if user_sol[i] == "-" and D1[cuv[i]] != 0:
-                user_sol = user_sol[:i] + "1" + user_sol[i + 1:]
-                D1[cuv[i]] -= 1
-            elif user_sol[i] == "-":
-                user_sol = user_sol[:i] + "0" + user_sol[i + 1:]
+    for i in range(5):
+        if user_sol[i] == "-" and D1[cuv[i]] != 0:
+            user_sol = user_sol[:i] + "1" + user_sol[i + 1:]
+            D1[cuv[i]] -= 1
+        elif user_sol[i] == "-":
+            user_sol = user_sol[:i] + "0" + user_sol[i + 1:]
+    
     nr = 0
     for i in range(4, -1, -1):
         nr += (3 ** (4 - i)) * (ord(user_sol[i]) - ord('0'))
