@@ -1,6 +1,18 @@
+"""
+        wordleNoGUI alege un cuvant random si primeste de la terminal
+    incercarile jucatorului, afisand, pana la ghicirea cuvantului, un 
+    feedback construit la fel ca cel furnizat de functia feed din fisierul
+    "feedback.py":
+        0 = litera de pe pozitia respectiva este intoarsa cu un fundal 
+            alb / gri
+        1 = litera de pe pozitia respectiva este intoarsa cu un fundal
+            galben
+        2 = litera de pe pozitia respectiva este intoarsa cu un fundal 
+            verde
+"""
 import random
 
-f = open("D:\Programare\Python\proiect_asc\cuvinte.txt", "r")
+f = open("cuvinte.txt", "r")
 L = []
 N = 11454 #numarul de cuvinte din baza de date
 
@@ -12,7 +24,6 @@ f.close()
 #alegem un cuvant random
 n = random.randint(0, N - 1)
 cuv = L[n]
-print(cuv)
 
 D = {k:cuv.count(k) for k in cuv}
 
@@ -24,12 +35,11 @@ while user_sol != "22222":
     D1 = {}
     D1 = D.copy()
     
-    #primim incercarea (de la guesser)
     if ok == 0:
-        sol = input("dati prima incercare: ")
+        sol = input("Dati prima incercare: ")
         ok = 1
     else:
-        sol = input("dati urmatoarea incercare: ")
+        sol = input("Dati urmatoarea incercare: ")
 
     D2 = {k : sol.count(k) for k in sol}
 

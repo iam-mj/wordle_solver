@@ -1,5 +1,9 @@
-import random
-import math
+"""
+        Am ales sa generam o singura data matricea de pattern-uri si sa o scriem 
+    in fisierul "matrice.txt" pentru a eficientiza considerabil timpul de executie.
+    Citirea acesteia din fisier este esentiala algoritmului de calcul al entropiei.
+
+"""
 
 f = open("D:\Programare\Python\proiect_asc\cuvinte.txt", "r")
 g = open("matrice2.txt", "x")
@@ -9,6 +13,8 @@ LIT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 M = []
 
+#determinam feedback-ul oferit de wordle atunci cand compara cuv si cuv2, 
+#cuv reprezentand incercarea, iar cuv2 cuvantul care trebuie gasit 
 def fdbk(cuv, cuv2):
     #cuv2 e cuvantul cautat
     user_sol = "00000"
@@ -33,6 +39,7 @@ def fdbk(cuv, cuv2):
         elif user_sol[i] == "-":
             user_sol = user_sol[:i] + "0" + user_sol[i + 1:]
     
+    #consideram pattern-ul un numar in baza zece si ii adaugam in matrice echivalentul in baza 10
     nr = 0
     for i in range(4, -1, -1):
         nr += (3 ** (4 - i)) * (ord(user_sol[i]) - ord('0'))
@@ -43,12 +50,12 @@ for x in f:
     L.append(x.strip(" \n"))#eliminam ENTER-ul de la finalul sirurilor de caractere
 f.close()
 
-#pastram pt fiecare cuvant de cate ori apare fiecare litera
+#pastram pt fiecare cuvant de cate ori apare fiecare litera pt a calcula mai usor feedback-ul
 DICT = {}
 for cuv in L:
     DICT[cuv] = {k:cuv.count(k) for k in cuv}
 
-#formam matricea de patterns
+#formam matricea de pattern-uri
 cnt = 0
 for cuv in L:
     linie = ""
