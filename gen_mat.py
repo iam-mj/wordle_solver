@@ -39,7 +39,7 @@ def fdbk(cuv, cuv2):
         elif user_sol[i] == "-":
             user_sol = user_sol[:i] + "0" + user_sol[i + 1:]
     
-    #consideram pattern-ul un numar in baza zece si ii adaugam in matrice echivalentul in baza 10
+    #consideram pattern-ul un numar in baza 3 si ii adaugam in matrice echivalentul in baza 10
     nr = 0
     for i in range(4, -1, -1):
         nr += (3 ** (4 - i)) * (ord(user_sol[i]) - ord('0'))
