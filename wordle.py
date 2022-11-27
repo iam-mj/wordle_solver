@@ -1,7 +1,14 @@
+"""
+        Jocul Wordle cu o interfata simpla. Afiseaza in terminal
+    cuvantul care trebuie ghicit. Din pacate, nu este inca conectat 
+    cu "guesser.py"
+    
+"""
+
 import random
 import tkinter as tk
 
-f = open("D:\Programare\Python\proiect_asc\cuvinte.txt", "r")
+f = open("cuvinte.txt", "r")
 L = []
 N = 11454 #numarul de cuvinte din baza de date
 
@@ -59,9 +66,9 @@ class MyGUI:
         self.root.mainloop()
 
     def create(self, message, k):
-        #show the feedback
+        #cream feedback-ul
         
-        self.num = 0#how many letters the player got right
+        self.num = 0#cate litere a gasit corect jucatorul
         D1 = {}
         D1 = D.copy()
 
@@ -92,7 +99,7 @@ class MyGUI:
                 elif user_sol[i] == "-":
                     user_sol = user_sol[:i] + "0" + user_sol[i + 1:]
 
-            #pe baza feedback-ului cream butoanele cu fundalele corespunzatoare
+            #pe baza feedback-ului cream butoanele cu fundalurile corespunzatoare
             for i in range(5):
                 if user_sol[i] == "2":
                     self.button = tk.Button(self.frame, text = message[i], bg = 'green')
@@ -105,7 +112,7 @@ class MyGUI:
                     self.button = tk.Button(self.frame, text = message[i], bg = 'white')
                     self.button.pack(side = tk.LEFT, pady = 2)
 
-        else: #if the word given by the user is not in the DB
+        else: #daca cuvantul nu e in baza de date
             self.lbl = tk.Label(
                             self.root,
                             text = "ERROR!",
@@ -118,7 +125,7 @@ class MyGUI:
                 
             if k == 1:
 
-                #create the new entry
+                #cream un nou Entry
                 self.next = tk.Entry(self.root, font = ('Calibri', 14))
                 self.next.pack(padx = 10, pady = 10)
 

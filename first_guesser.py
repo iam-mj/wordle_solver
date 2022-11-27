@@ -1,7 +1,13 @@
+"""
+        Prima incercare de algoritm, nu calculeaza entropia asa cum trebuie, 
+    dar ne-am batut mult capul cu ea si am ales sa o pastram 
+
+"""
+
 import random
 import math
 
-f = open("D:\Programare\Python\proiect_asc\cuvinte.txt", "r")
+f = open("cuvinte.txt", "r")
 L = []
 N = 11454 #numarul de cuvinte din baza de date
 LIT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
