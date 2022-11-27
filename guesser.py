@@ -131,7 +131,7 @@ def rezolv_wordle(cuv):
         return incercari
         
     else:
-        print(SOLUTIE[:len(SOLUTIE)])#nu afisam si ENTER-UL
+        print(SOLUTIE)
 
 #alegeti ce optiune sa execute algoritmul
 optiune = int(input("Pentru a genera fisierul solutii.txt si numarul mediu de incercari alegeti 1, pentru a afisa rezolvarea pentru un cuvant aleatoriu alegeti 2, pentru a afisare rezolvarea pentru un cuvant ales de dumneavoastra alegeti 3: \n"))
