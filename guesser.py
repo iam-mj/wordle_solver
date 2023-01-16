@@ -57,7 +57,7 @@ for linie in mat:
 def rezolv_wordle(cuv):
 
     incercari = 0
-    SOLUTIE = cuv + " "
+    SOLUTIE = cuv
 
     D = {k:cuv.count(k) for k in cuv} #dictionarul cu frecventa literelor din cuvantul care trebuie ghicit
 
@@ -91,7 +91,7 @@ def rezolv_wordle(cuv):
             ok = False
         
         #luam in calcul noua incercare
-        SOLUTIE += cuvmax + " "
+        SOLUTIE += ", " + cuvmax 
         incercari += 1
         
         #cerem feedback de la wordle
@@ -123,7 +123,7 @@ def rezolv_wordle(cuv):
             break
 
     else:#daca gasim cuvantul fiindca am ramas cu o singura optiune valida
-        SOLUTIE += valL[0] + "\n"
+        SOLUTIE += ", " + valL[0] + "\n"
         incercari += 1
 
     if optiune == 1:
